@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email    String    @unique
+  userName String    @unique
+  password String
+  posts    Post[]
+  reviews  Review[]
+  comments Comment[]
+  votes    Votes[]
+  badges   Badges[]
+  points   String
+}
+
+model Post {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  title      String
+  body       String
+  tags       String[]
+  media      Media[]
+  comments   Comment[]
+  category   Category  @relation(fields: [categoryId], references: [id])
+  categoryId String    @db.ObjectId
+  votes      Votes[]
+  badges     Badges[]
+}
+
+model Review {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  title      String
+  body       String
+  tags       String[]
+  youtubeUrl String?
+  category   Category  @relation(fields: [categoryId], references: [id])
+  categoryId String    @db.ObjectId
+  media      Media[]
+  comments   Comment[]
+  votes      Votes[]
+  Badges     Badges[]
+}
+
+model Media {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  postId   String @db.ObjectId
+  post     Post   @relation(fields: [postId], references: [id])
+  reviewId String @db.ObjectId
+  review   Review @relation(fields: [reviewId], references: [id])
+  url      String
+}
+
+model Comment {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  postId   String  @db.ObjectId
+  post     Post    @relation(fields: [postId], references: [id])
+  reviewId String  @db.ObjectId
+  review   Review  @relation(fields: [reviewId], references: [id])
+  userId   String  @db.ObjectId
+  user     User    @relation(fields: [userId], references: [id])
+  body     String
+  votes    Votes[]
+}
+
+model Category {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  parentId       String?    @db.ObjectId
+  parentCategory Category?  @relation("parentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category       Category[] @relation("parentChild")
+  Post           Post[]
+  review         Review[]
+}
+
+model Votes {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  isUpVote   Boolean
+  isDownVote Boolean
+  postId     String  @db.ObjectId
+  post       Post    @relation(fields: [postId], references: [id])
+  reviewId   String  @db.ObjectId
+  review     Review  @relation(fields: [reviewId], references: [id])
+  userId     String  @db.ObjectId
+  user       User    @relation(fields: [userId], references: [id])
+  commentId  String  @db.ObjectId
+  comment    Comment @relation(fields: [commentId], references: [id])
+}
+
+model Badges {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  postId       String @db.ObjectId
+  post         Post   @relation(fields: [postId], references: [id])
+  reviewId     String @db.ObjectId
+  review       Review @relation(fields: [reviewId], references: [id])
+  lightModeUrl String
+  darkModeUrl  String
+  userId       String @db.ObjectId
+  user         User   @relation(fields: [userId], references: [id])
+}
