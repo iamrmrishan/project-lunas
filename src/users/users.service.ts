@@ -1,15 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma.service';
 import { User } from '@prisma/client';
-import { CreateUser } from './dto/create-user.dto';
-import { LoginUser } from './dto/login-user.dto';
 import { compare, hash } from 'bcrypt';
+import { ICreateUser, ILoginUser } from './users.interface';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(createUser: CreateUser): Promise<User> {
+  async createUser(createUser: ICreateUser): Promise<User> {
     const isUserExsists = await this.prisma.user.findFirst({
       where: { email: createUser.email },
     });
@@ -28,7 +27,7 @@ export class UsersService {
     }
   }
 
-  async findByLogin({ email, password }: LoginUser): Promise<any> {
+  async findByLogin({ email, password }: ILoginUser): Promise<any> {
     const user = await this.prisma.user.findFirst({
       where: { email },
     });

@@ -2,10 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
-import { CreateUser } from './../users/dto/create-user.dto';
 import { RegistrationStatus } from './auth.interface';
-import { LoginUser } from 'src/users/dto/login-user.dto';
 import { JwtPayload } from './jwt.strategy';
+import { ICreateUser, ILoginUser } from 'src/users/users.interface';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +14,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  async register(createUser: CreateUser): Promise<RegistrationStatus> {
+  async register(createUser: ICreateUser): Promise<RegistrationStatus> {
     let status: RegistrationStatus = {
       success: true,
       message: 'ACCOUNT_CREATE_SUCCESS',
@@ -32,7 +31,7 @@ export class AuthService {
     return status;
   }
 
-  async login(loginUser: LoginUser): Promise<any> {
+  async login(loginUser: ILoginUser): Promise<any> {
     // find user in db
     const user = await this.usersService.findByLogin(loginUser);
 
