@@ -36,25 +36,21 @@ export class CreatePost {
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
   @ApiProperty()
   media: Media[];
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
   @ApiProperty()
   comments: Comment[];
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
   @ApiProperty()
   votes: Vote[];
 
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
   @ApiProperty()
   badges: Badges[];
 }
@@ -109,7 +105,6 @@ export class Comment {
 
   @ApiProperty()
   @IsArray()
-  @ValidateNested({ each: true })
   votes: Vote[];
 }
 
@@ -142,12 +137,12 @@ export class Vote {
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
-  isUpVote: string;
+  isUpVote: boolean;
 
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
-  isDownVote: string;
+  isDownVote: boolean;
 }
 
 export class Badges {
