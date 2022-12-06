@@ -3,6 +3,7 @@ import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { PrismaService } from 'src/prisma.service';
 
+
 @Module({
   providers: [PostsService, PrismaService],
   controllers: [PostsController]
