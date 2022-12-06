@@ -7,6 +7,15 @@ export class PostsService {
   constructor(private prisma: PrismaService) {}
 
   async createPost(createPost: ICreatePost): Promise<any> {
-    return await this.prisma.post.create({ data: createPost });
+    return await this.prisma.post.create({
+      data: {
+        userId: createPost.userId,
+        title: createPost.title,
+        body: createPost.body,
+        categoryId: createPost.categoryId,
+        tags: createPost.tags,
+        mediaId: createPost.mediaId,
+      },
+    });
   }
 }
