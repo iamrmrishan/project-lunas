@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { ICreatePost } from './posts.interface';
+import { ICreatePost, IPostSearch } from './posts.interface';
 
 @Injectable()
 export class PostsService {
@@ -17,5 +17,15 @@ export class PostsService {
         mediaId: createPost.mediaId,
       },
     });
+  }
+
+  async findBySearch(options: IPostSearch): Promise<any> {
+    const posts = await this.prisma.post.findMany({
+      where: options.where,
+      skip: options.skip,
+      take: options.take,
+      orderBy: options.order,
+    });
+    return posts;
   }
 }
