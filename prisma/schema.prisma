@@ -11,17 +11,19 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  email    String    @unique
-  userName String    @unique
-  password String
-  posts    Post[]
-  reviews  Review[]
-  comments Comment[]
-  media    Media[]
-  votes    Votes[]
-  badges   Badges[]
-  points   String
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
+  userName  String    @unique
+  password  String
+  posts     Post[]
+  reviews   Review[]
+  comments  Comment[]
+  media     Media[]
+  votes     Votes[]
+  badges    Badges[]
+  points    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Post {
@@ -38,6 +40,8 @@ model Post {
   categoryId String    @db.ObjectId
   votes      Votes[]
   badges     Badges[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Review {
@@ -55,27 +59,37 @@ model Review {
   comments   Comment[]
   votes      Votes[]
   Badges     Badges[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Media {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId String   @db.ObjectId
-  user   User     @relation(fields: [userId], references: [id])
-  url    String
-  Post   Post[]
-  Review Review[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  url       String
+  Post      Post[]
+  Review    Review[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comment {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  postId   String  @db.ObjectId
-  post     Post    @relation(fields: [postId], references: [id])
-  reviewId String  @db.ObjectId
-  review   Review  @relation(fields: [reviewId], references: [id])
-  userId   String  @db.ObjectId
-  user     User    @relation(fields: [userId], references: [id])
-  body     String
-  votes    Votes[]
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  postId          String    @db.ObjectId
+  post            Post      @relation(fields: [postId], references: [id])
+  reviewId        String    @db.ObjectId
+  review          Review    @relation(fields: [reviewId], references: [id])
+  userId          String    @db.ObjectId
+  parentCommentId String?   @db.ObjectId
+  parentComment   Comment?  @relation("parentChild", fields: [parentCommentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Comment         Comment[] @relation("parentChild")
+  user            User      @relation(fields: [userId], references: [id])
+  body            String
+  votes           Votes[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
 }
 
 model Category {
@@ -89,17 +103,19 @@ model Category {
 }
 
 model Votes {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   isUpVote   Boolean
   isDownVote Boolean
-  postId     String  @db.ObjectId
-  post       Post    @relation(fields: [postId], references: [id])
-  reviewId   String  @db.ObjectId
-  review     Review  @relation(fields: [reviewId], references: [id])
-  userId     String  @db.ObjectId
-  user       User    @relation(fields: [userId], references: [id])
-  commentId  String  @db.ObjectId
-  comment    Comment @relation(fields: [commentId], references: [id])
+  postId     String   @db.ObjectId
+  post       Post     @relation(fields: [postId], references: [id])
+  reviewId   String   @db.ObjectId
+  review     Review   @relation(fields: [reviewId], references: [id])
+  userId     String   @db.ObjectId
+  user       User     @relation(fields: [userId], references: [id])
+  commentId  String   @db.ObjectId
+  comment    Comment  @relation(fields: [commentId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Badges {

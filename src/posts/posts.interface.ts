@@ -6,3 +6,10 @@ export interface ICreatePost {
   tags: string[];
   mediaId: string[];
 }
+
+export interface IPostSearch {
+  where: any;
+  order: any;
+  skip: number;
+  take: number;
+}
