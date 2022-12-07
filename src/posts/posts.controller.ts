@@ -38,10 +38,10 @@ export class PostsController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ): Promise<any> {
-    // const order = { createdAt: 'desc' };
-    const order: any = {};
+    const order = { createdAt: 'desc' };
     const where: any = {};
-    if (keyword) where.title = new RegExp(keyword.toString(), 'i');
+    if (keyword) where.title = keyword.toString();
+    if (keyword) where.body = keyword.toString();
     const options = {
       where,
       order,

@@ -21,7 +21,14 @@ export class PostsService {
 
   async findBySearch(options: IPostSearch): Promise<any> {
     const posts = await this.prisma.post.findMany({
-      where: options.where,
+      where: {
+        title: {
+          contains: options.where.title,
+        },
+        body: {
+          contains: options.where.body,
+        },
+      },
       skip: options.skip,
       take: options.take,
       orderBy: options.order,
