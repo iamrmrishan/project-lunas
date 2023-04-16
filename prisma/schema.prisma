@@ -22,8 +22,8 @@ model User {
   votes     Votes[]
   badges    Badges[]
   points    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 model Post {
@@ -89,17 +89,16 @@ model Comment {
   votes           Votes[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
 }
 
 model Category {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  parentId       String?    @db.ObjectId
-  parentCategory Category?  @relation("parentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  category       Category[] @relation("parentChild")
-  Post           Post[]
-  review         Review[]
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  parentId String?    @map("parentId") @db.ObjectId
+  parent   Category?  @relation(name: "CategoryParent", fields: [parentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  children Category[] @relation(name: "CategoryParent")
+  Post     Post[]
+  Review   Review[]
 }
 
 model Votes {

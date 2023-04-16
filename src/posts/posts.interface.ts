@@ -13,3 +13,13 @@ export interface IPostSearch {
   skip: number;
   take: number;
 }
+
+export interface IUpdatePost {
+  id: string;
+  userId: string;
+  title?: string;
+  body?: string;
+  categoryId?: string;
+  tags?: string[];
+  mediaId?: string[];
+}

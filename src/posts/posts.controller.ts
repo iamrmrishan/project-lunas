@@ -13,6 +13,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { getCurrentUser } from 'src/users/current-user.decorator';
 import { IUser } from 'src/users/users.interface';
 import { CreatePost } from './dto/create-post.dto';
+import { UpdatePost } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -29,6 +30,18 @@ export class PostsController {
   ): Promise<any> {
     createPost.userId = currentUser.id;
     return this.postsService.createPost(createPost);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('access-key')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post('update-post')
+  async updatePost(
+    @getCurrentUser() currentUser: IUser,
+    @Body() updatePost: UpdatePost,
+  ): Promise<any> {
+    if ((updatePost.userId = currentUser.id))
+      return this.postsService.updatePost(updatePost);
   }
 
   @Get('search')
