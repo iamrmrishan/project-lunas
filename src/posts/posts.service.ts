@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { ICreatePost, IPostSearch } from './posts.interface';
+import { ICreatePost, IPostSearch, IUpdatePost } from './posts.interface';
 
 @Injectable()
 export class PostsService {
@@ -19,6 +19,21 @@ export class PostsService {
     });
   }
 
+  async updatePost(updatePost: IUpdatePost): Promise<any> {
+    return await this.prisma.post.update({
+      data: {
+        title: updatePost.title,
+        body: updatePost.body,
+        categoryId: updatePost.categoryId,
+        tags: updatePost.tags,
+        mediaId: updatePost.mediaId,
+      },
+      where: {
+        id: updatePost.id,
+      },
+    });
+  }
+
   async findBySearch(options: IPostSearch): Promise<any> {
     const posts = await this.prisma.post.findMany({
       where: {
@@ -28,6 +43,9 @@ export class PostsService {
         body: {
           contains: options.where.body,
         },
+      },
+      include: {
+        user: true,
       },
       skip: options.skip,
       take: options.take,
