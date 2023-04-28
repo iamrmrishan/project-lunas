@@ -9,10 +9,12 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesController } from './categories/categories.controller';
 import { CategoriesService } from './categories/categories.service';
+import { CommentsController } from './comments/comments.controller';
+import { CommentsService } from './comments/comments.service';
 
 @Module({
   imports: [AuthModule, UsersModule, PostsModule],
-  controllers: [AppController, UsersController, CategoriesController],
-  providers: [AppService, UsersService, PrismaService, CategoriesService],
+  controllers: [AppController, UsersController, CategoriesController, CommentsController],
+  providers: [AppService, UsersService, PrismaService, CategoriesService, CommentsService],
 })
 export class AppModule {}
