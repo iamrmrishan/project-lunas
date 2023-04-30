@@ -37,6 +37,7 @@ export class PostsService {
   async findBySearch(options: IPostSearch): Promise<any> {
     const posts = await this.prisma.post.findMany({
       where: {
+        userId:options.where.userId,
         title: {
           contains: options.where.title,
         },
@@ -53,4 +54,5 @@ export class PostsService {
     });
     return posts;
   }
+
 }

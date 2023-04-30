@@ -53,6 +53,7 @@ export class PostsController {
   ): Promise<any> {
     const order = { createdAt: 'desc' };
     const where: any = {};
+    if (keyword) where.userId = keyword.toString();
     if (keyword) where.title = keyword.toString();
     if (keyword) where.body = keyword.toString();
     const options = {
