@@ -23,11 +23,22 @@ export class AuthService {
     try {
       status.data = await this.usersService.createUser(createUser);
     } catch (err) {
+      // Extract the error message from the caught error
+      const errorMessage = err.message || 'Account creation failed';
+
+      // Update the registration status with the error message
       status = {
         success: false,
-        message: err,
+        message: errorMessage,
       };
+
+      // Log the error and throw an HttpException if necessary
+      console.error(err);
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST, {
+        cause: err,
+      });
     }
+
     return status;
   }
 

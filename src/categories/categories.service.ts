@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ICategorySearch } from './categories.interface';
-import { Category } from '@prisma/client';
-
-// Define a custom type for Category that includes the 'children' property
-type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
 
 @Injectable()
 export class CategoriesService {

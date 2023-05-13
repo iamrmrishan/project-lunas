@@ -11,10 +11,12 @@ import { CategoriesController } from './categories/categories.controller';
 import { CategoriesService } from './categories/categories.service';
 import { CommentsController } from './comments/comments.controller';
 import { CommentsService } from './comments/comments.service';
+import { VotesController } from './votes/votes.controller';
+import { VotesService } from './votes/votes.service';
 
 @Module({
   imports: [AuthModule, UsersModule, PostsModule],
-  controllers: [AppController, UsersController, CategoriesController, CommentsController],
-  providers: [AppService, UsersService, PrismaService, CategoriesService, CommentsService],
+  controllers: [AppController, UsersController, CategoriesController, CommentsController, VotesController],
+  providers: [AppService, UsersService, PrismaService, CategoriesService, CommentsService, VotesService],
 })
 export class AppModule {}
