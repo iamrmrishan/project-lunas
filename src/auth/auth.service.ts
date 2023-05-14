@@ -21,7 +21,21 @@ export class AuthService {
     };
 
     try {
-      status.data = await this.usersService.createUser(createUser);
+      const user = await this.usersService.createUser(createUser);
+
+      // Generate a token for the new user
+      const token = this._createToken({
+        login: {
+          email: user.email,
+          password: user.password,
+        },
+      });
+
+      // Add the user data and token to the registration status
+      status.data = {
+        user,
+        ...token,
+      };
     } catch (err) {
       // Extract the error message from the caught error
       const errorMessage = err.message || 'Account creation failed';
