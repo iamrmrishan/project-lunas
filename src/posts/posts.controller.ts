@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UseGuards,
@@ -63,5 +64,10 @@ export class PostsController {
       take: limit ? parseInt(limit) : 4,
     };
     return this.postsService.findBySearch(options);
+  }
+
+  @Get('post/:id')
+  async getPostById(@Param('id') id: string): Promise<any> {
+    return this.postsService.findById(id);
   }
 }
