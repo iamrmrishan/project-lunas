@@ -58,6 +58,9 @@ export class PostsService {
   async findById(id: string): Promise<any> {
     const post = await this.prisma.post.findUnique({
       where: { id },
+      include: {
+        user:true,
+      }
     });
     return post;
   }
